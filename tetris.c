@@ -56,9 +56,9 @@ double compute_probability(int width, int height, int lines_to_win, int *state, 
 }
 
 int main() {
-    int width = 4;
-    int height = 8;
-    int lines_to_win = 5;
+    int width = 2;
+    int height = 4;
+    int lines_to_win = 2;
     int base = height + 1;
     int *state = calloc(width, sizeof(int));
     double *memo = malloc(pow(base, width) * sizeof(double));
@@ -72,7 +72,7 @@ int main() {
     }
     
     double probability = compute_probability(width, height, lines_to_win, state, memo, base);
-    printf("Probability of winning: %.7f\n", probability);
+    printf("Probability of winning: %.7f%%\n", 100*probability);
     
     free(state);
     free(memo);
