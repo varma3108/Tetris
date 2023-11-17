@@ -56,25 +56,38 @@ double compute_probability(int width, int height, int lines_to_win, int *state, 
 }
 
 int main() {
-    int width = 2;
-    int height = 4;
-    int lines_to_win = 2;
-    int base = height + 1;
-    int *state = calloc(width, sizeof(int));
-    double *memo = malloc(pow(base, width) * sizeof(double));
-    if (!state || !memo) {
-        fprintf(stderr, "Memory allocation failed\n");
+    FILE *inputFile = fopen("input.txt", "r");
+    FILE *outputFile = fopen("output.txt", "w");
+
+    if (!inputFile || !outputFile) {
+        fprintf(stderr, "File opening failed\n");
         return 1;
     }
-    
-    for (int i = 0; i < pow(base, width); ++i) {
-        memo[i] = -1;
+
+    int width, height, lines_to_win;
+    while (fscanf(inputFile, "%d %d %d", &width, &height, &lines_to_win) == 3) {
+        int base = height + 1;
+        int *state = calloc(width, sizeof(int));
+        double *memo = malloc(pow(base, width) * sizeof(double));
+
+        if (!state || !memo) {
+            fprintf(stderr, "Memory allocation failed\n");
+            return 1;
+        }
+
+        for (int i = 0; i < pow(base, width); ++i) {
+            memo[i] = -1;
+        }
+
+        double probability = compute_probability(width, height, lines_to_win, state, memo, base);
+        fprintf(outputFile, "%.7f\n", probability);
+
+        free(state);
+        free(memo);
     }
-    
-    double probability = compute_probability(width, height, lines_to_win, state, memo, base);
-    printf("Probability of winning: %.7f%%\n", 100*probability);
-    
-    free(state);
-    free(memo);
+
+    fclose(inputFile);
+    fclose(outputFile);
+
     return 0;
 }
