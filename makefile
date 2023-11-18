@@ -1,2 +1,2 @@
 tetris:
-	gcc tetris.c -o tetris
+	gcc tetris.c -std=c99 -lm -o tetris
